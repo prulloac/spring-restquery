@@ -24,9 +24,9 @@ public class SpecificationBuilder {
 
 	private static SearchCondition createSearchCondition(String filter) {
 		String[] split = filter.split(":");
-		SearchCondition criteria = new SearchCondition();
-		criteria.setField(split[0]);
-		criteria.setOperation(QueryOperation.parse(split[1]));
+		SearchCondition criteria = new SearchCondition()
+				.setField(split[0])
+				.setOperation(QueryOperation.parse(split[1]));
 		int binaryOperationLength = 3;
 		if (split.length == binaryOperationLength) {
 			criteria.setValue(split[2]);

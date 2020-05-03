@@ -26,6 +26,11 @@
             <artifactId>re2j</artifactId>
             <version>${re2j.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>29.0-jre</version>
+        </dependency>
     </dependencies>
 
 </project>
