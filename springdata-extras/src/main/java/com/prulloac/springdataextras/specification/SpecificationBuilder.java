@@ -4,23 +4,19 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.Assert;
 
 import com.google.re2j.Pattern;
-import com.prulloac.springdataextras.utils.EntityScanUtil;
+import com.prulloac.springdataextras.utils.SpecialColumnIdentifier;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**
  * @author Prulloac
  */
-public class SpecificationBuilder {
-
-	private SpecificationBuilder() throws IllegalAccessError {
-	}
+public interface SpecificationBuilder {
 
 	private static SearchCondition createSearchCondition(String filter) {
 		String[] split = filter.split(":");
@@ -42,9 +38,6 @@ public class SpecificationBuilder {
 	}
 
 	private static List<String> filterFilters(String[] filters, List<String> fields) {
-		if (null == filters || filters.length == 0) {
-			return Collections.emptyList();
-		}
 		Assert.isTrue(isValidFilterSyntax(filters),
 				"filter syntax error: it should be noted as <field>:<operation>[:<value>]");
 		return Arrays.stream(filters)
@@ -52,26 +45,23 @@ public class SpecificationBuilder {
 				.collect(Collectors.toList());
 	}
 
-	public static <T> Specification<T> build(String[] filters, Class<T> entityClass) {
-		if (null == filters || filters.length == 0) {
+	static <T> Specification<T> build(String[] filters, Class<T> entityClass) {
+		if (isEmpty(filters)) {
 			return null;
 		}
-		List<String> fields = EntityScanUtil.getAllFields(entityClass)
-				.stream()
-				.filter(field ->
-						field.isAnnotationPresent(Column.class) ||
-						field.isAnnotationPresent(JoinColumn.class))
-				.map(Field::getName)
-				.collect(Collectors.toList());
+		List<String> fields = SpecialColumnIdentifier.getFilterableColumns(entityClass);
 		List<DynamicSpecification<T>> cleansedFilters = filterFilters(filters, fields)
 				.stream()
 				.map(SpecificationBuilder::createSearchCondition)
 				.map(DynamicSpecification<T>::new)
 				.collect(Collectors.toList())
 				;
+		if (cleansedFilters.isEmpty()) {
+			return null;
+		}
 		Specification<T> result = cleansedFilters.get(0);
 		for (int i = 1; i < cleansedFilters.size(); i++) {
-			result = Specification.where(result)
+			result = Objects.requireNonNull(Specification.where(result))
 					.and(cleansedFilters.get(i));
 		}
 		return result;

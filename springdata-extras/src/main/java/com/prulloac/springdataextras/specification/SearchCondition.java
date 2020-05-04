@@ -12,7 +12,7 @@ public class SearchCondition {
 
 	public SearchCondition() {
 		field = "id";
-		value = null;
+		value = 1;
 		operation = QueryOperation.EQUALS;
 	}
 
@@ -50,13 +50,13 @@ public class SearchCondition {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		SearchCondition that = (SearchCondition) o;
-		return Objects.equal(field, that.field) &&
-				operation == that.operation &&
-				Objects.equal(value, that.value);
+	public boolean equals(Object thatObject) {
+		if (this == thatObject) return true;
+		if (thatObject == null || this.getClass() != thatObject.getClass()) return false;
+		SearchCondition that = (SearchCondition) thatObject;
+		return Objects.equal(this.field, that.field) &&
+				this.operation == that.operation &&
+				Objects.equal(this.value, that.value);
 	}
 
 	@Override

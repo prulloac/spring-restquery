@@ -11,10 +11,10 @@ public class QueryOperationTest {
 
 	@Test
 	public void testGetterAndParse() {
-		QueryOperation queryOperation = QueryOperation.AFTER;
+		QueryOperation queryOperation = QueryOperation.GREATER_THAN;
 		assertThat(QueryOperation.parse("isEqual"), nullValue());
 		assertThat(QueryOperation.parse("eq"), notNullValue());
-		assertThat(queryOperation.getIdentifier(), equalTo("after"));
+		assertThat(queryOperation.getIdentifier(), equalTo("gt"));
 	}
 
 }

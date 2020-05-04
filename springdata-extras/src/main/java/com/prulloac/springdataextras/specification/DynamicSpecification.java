@@ -6,12 +6,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.Arrays;
 
 /**
  * @author Prulloac
@@ -22,6 +17,10 @@ public class DynamicSpecification<T> implements Specification<T> {
 
 	public DynamicSpecification(SearchCondition condition) {
 		this.condition = condition;
+	}
+
+	public static <T> DynamicSpecification<T> of(SearchCondition condition) {
+		return new DynamicSpecification<>(condition);
 	}
 
 	@Override
@@ -43,12 +42,9 @@ public class DynamicSpecification<T> implements Specification<T> {
 				return criteriaBuilder.like(criteriaBuilder.upper(root.get(condition.field)),
 						"%"+((String) condition.value).toUpperCase());
 			case CONTAINS:
-				return criteriaBuilder.like(root.get(condition.field), "%"+ condition.value+"%");
-			case CONTAINS_IGNORE_CASE:
-				return criteriaBuilder.like(criteriaBuilder.upper(root.get(condition.field)),
-						"%"+((String) condition.value).toUpperCase()+"%");
 			case LIKE:
 				return criteriaBuilder.like(root.get(condition.field), "%"+ condition.value+"%");
+			case CONTAINS_IGNORE_CASE:
 			case LIKE_IGNORE_CASE:
 				return criteriaBuilder.like(criteriaBuilder.upper(root.get(condition.field)),
 						"%"+((String) condition.value).toUpperCase()+"%");
@@ -68,44 +64,24 @@ public class DynamicSpecification<T> implements Specification<T> {
 			case LESS_THAN_EQUALS:
 				return criteriaBuilder.le(root.get(condition.field), (Number) condition.value);
 			case IN:
-				return criteriaBuilder.in(root.get(condition.field)).value(condition.value);
+				CriteriaBuilder.In<String> in = criteriaBuilder
+						.in(root.get(condition.field)
+						.as(String.class));
+				Arrays.stream(condition.value.toString().split(","))
+						.forEach(in::value);
+				return in;
 			case NOT_IN:
-				return criteriaBuilder.not(criteriaBuilder.in(root.get(condition.field)).value(condition.value));
+				CriteriaBuilder.In<Object> notIn = criteriaBuilder
+						.in(root.get(condition.field)
+						.as(String.class));
+				Arrays.stream(condition.value.toString().split(","))
+						.forEach(notIn::value);
+				return criteriaBuilder.not(notIn);
 			case IS_NULL:
 				return criteriaBuilder.isNull(root.get(condition.field));
-			case NOT_NULL:
-				return criteriaBuilder.isNotNull(root.get(condition.field));
-			case BEFORE:
-				return buildBefore(root, criteriaBuilder, condition);
-			case AFTER:
-				return buildAfter(root, criteriaBuilder, condition);
 			default:
-				return null;
+				return criteriaBuilder.isNotNull(root.get(condition.field));
 		}
-	}
-
-	private Predicate buildAfter(Root<T> root, CriteriaBuilder criteriaBuilder, SearchCondition criteria) {
-		try {
-			return criteriaBuilder.greaterThan(root.get(criteria.field).as(Timestamp.class),
-					Timestamp.valueOf(LocalDateTime.parse((String)criteria.value, DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
-		} catch (Exception e) {
-			return criteriaBuilder.greaterThan(root.get(criteria.field).as(Date.class),
-					toDate(LocalDate.parse((String)criteria.value, DateTimeFormatter.ISO_LOCAL_DATE)));
-		}
-	}
-
-	private Predicate buildBefore(Root<T> root, CriteriaBuilder criteriaBuilder, SearchCondition criteria) {
-		try {
-			return criteriaBuilder.lessThanOrEqualTo(root.get(criteria.field).as(Timestamp.class),
-					Timestamp.valueOf(LocalDateTime.parse((String)criteria.value, DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
-		} catch (Exception e) {
-			return criteriaBuilder.lessThanOrEqualTo(root.get(criteria.field).as(Date.class),
-					toDate(LocalDate.parse((String)criteria.value, DateTimeFormatter.ISO_LOCAL_DATE)));
-		}
-	}
-
-	private Date toDate(ChronoLocalDate field) {
-		return new Date(field.toEpochDay());
 	}
 
 }

@@ -5,18 +5,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.util.Assert;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 /**
  * @author Prulloac
  */
-public class PageRequestBuilder {
-
-	private PageRequestBuilder() throws IllegalAccessException {
-		throw new IllegalAccessException("Utility class should not be instantiated");
-	}
+public interface PageRequestBuilder {
 
 	private static boolean isValidSortCombosSyntax(String[] sortCombos) {
 		return Arrays.stream(sortCombos).allMatch(combo ->
@@ -34,9 +31,6 @@ public class PageRequestBuilder {
 	}
 
 	private static List<String> filterSortFields(String[] sortCombos, List<String> sorteableBy) {
-		if (null == sortCombos || sortCombos.length == 0) {
-			return Collections.emptyList();
-		}
 		Assert.isTrue(isValidSortCombosSyntax(sortCombos),
 				"combos syntax error: it should be noted as <field>:asc|desc");
 		return Arrays.stream(sortCombos)
@@ -44,8 +38,8 @@ public class PageRequestBuilder {
 				.collect(Collectors.toList());
 	}
 
-	public static Sort buildSort(String[] sortCombos, Class<?> entity) {
-		if (null != sortCombos && sortCombos.length != 0) {
+	static Sort buildSort(String[] sortCombos, Class<?> entity) {
+		if (!isEmpty(sortCombos)) {
 			List<Sort.Order> sort = filterSortFields(sortCombos, SpecialColumnIdentifier.getSorteableColumns(entity))
 					.stream()
 					.map(PageRequestBuilder::propertyToOrder)
@@ -57,9 +51,9 @@ public class PageRequestBuilder {
 		return Sort.unsorted();
 	}
 
-	public static PageRequest buildRequest(Integer offset, Integer limit, String[] sortCombos, Class<?> entity) {
-		int size = null == limit || limit < 1 ? Integer.MAX_VALUE : limit;
-		int page = null == offset || offset < 0 ? 0 : offset;
+	static PageRequest buildRequest(Integer pageNumber, Integer pageSize, String[] sortCombos, Class<?> entity) {
+		int size = null == pageSize || pageSize < 1 ? Integer.MAX_VALUE : pageSize;
+		int page = null == pageNumber || pageNumber < 0 ? 0 : pageNumber;
 		Sort sort = buildSort(sortCombos, entity);
 		if (sort != Sort.unsorted()) {
 			return PageRequest.of(page, size, sort);

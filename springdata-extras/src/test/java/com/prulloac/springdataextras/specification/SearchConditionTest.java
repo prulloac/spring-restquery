@@ -21,7 +21,7 @@ public class SearchConditionTest {
 		searchCondition = new SearchCondition();
 		assertThat(searchCondition.getField(), equalTo("id"));
 		assertThat(searchCondition.getOperation(), equalTo(QueryOperation.EQUALS));
-		assertThat(searchCondition.getValue(), nullValue());
+		assertThat(searchCondition.getValue(), equalTo(1));
 		SearchCondition searchCondition2 = new SearchCondition(nameStr, startsWith, testStr);
 		assertThat(searchCondition.setField(nameStr), hasProperty("field", equalTo(nameStr)));
 		assertThat(searchCondition.setOperation(startsWith), hasProperty("operation", equalTo(startsWith)));

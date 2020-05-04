@@ -147,25 +147,11 @@ public enum QueryOperation {
 	 * @see javax.persistence.criteria.CriteriaBuilder#isNotNull(Expression)
 	 */
 	NOT_NULL("notNull"),
-
-
-	/**
-	 * Represents a JPQL '<=' predicate applied to a time related operation
-	 * @see javax.persistence.criteria.CriteriaBuilder#equal(Expression, Object)
-	 */
-	BEFORE("before"),
-
-
-	/**
-	 * Represents a JPQL '>' predicate applied to a time related operation
-	 * @see javax.persistence.criteria.CriteriaBuilder#greaterThan(Expression, Comparable)
-	 */
-	AFTER("after"),
 	;
 
 	public static final String BINARY_OPERATORS_REGEX = "(eq|eqIgnoreCase|lt|lte|gt|gte|in|notIn|like|" +
 			"likeIgnoreCase|likeOrNull|likeOrNullIgnoreCase|contains|containsIgnoreCase|startsWith|" +
-			"startsWithIgnoreCase|endsWith|endsWithIgnoreCase|before|after)";
+			"startsWithIgnoreCase|endsWith|endsWithIgnoreCase)";
 	public static final String UNARY_OPERATORS_REGEX = "(isNull|notNull)";
 
 	private final String identifier;
