@@ -3,5 +3,4 @@ package com.prulloac.springdataextras;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TestApplication {
-}
+public class TestApplication {}

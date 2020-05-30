@@ -6,13 +6,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * @author Prulloac
- */
+/** @author Prulloac */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
 @SorteableColumn
 @FilterableColumn
 @Documented
-public @interface FilterableSorteableColumn {
-}
+public @interface FilterableSorteableColumn {}

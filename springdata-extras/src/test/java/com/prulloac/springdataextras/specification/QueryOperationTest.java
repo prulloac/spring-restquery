@@ -9,12 +9,11 @@ import static org.hamcrest.core.IsNull.nullValue;
 
 public class QueryOperationTest {
 
-	@Test
-	public void testGetterAndParse() {
-		QueryOperation queryOperation = QueryOperation.GREATER_THAN;
-		assertThat(QueryOperation.parse("isEqual"), nullValue());
-		assertThat(QueryOperation.parse("eq"), notNullValue());
-		assertThat(queryOperation.getIdentifier(), equalTo("gt"));
-	}
-
+  @Test
+  public void testGetterAndParse() {
+    QueryOperation queryOperation = QueryOperation.GREATER_THAN;
+    assertThat(QueryOperation.parse("isEqual"), nullValue());
+    assertThat(QueryOperation.parse("eq"), notNullValue());
+    assertThat(queryOperation.getIdentifier(), equalTo("gt"));
+  }
 }

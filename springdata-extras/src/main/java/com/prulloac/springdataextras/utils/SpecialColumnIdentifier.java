@@ -12,39 +12,34 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-/**
- * @author Prulloac
- */
+/** @author Prulloac */
 public interface SpecialColumnIdentifier {
 
-	private static Predicate<Field> isColumn() {
-		return field -> field.isAnnotationPresent(Column.class);
-	}
+  private static Predicate<Field> isColumn() {
+    return field -> field.isAnnotationPresent(Column.class);
+  }
 
-	private static <T extends Annotation> Predicate<Field> isSpecialColumnType(Class<T> annotation) {
-		return isColumn().and(field -> field.isAnnotationPresent(annotation));
-	}
+  private static <T extends Annotation> Predicate<Field> isSpecialColumnType(Class<T> annotation) {
+    return isColumn().and(field -> field.isAnnotationPresent(annotation));
+  }
 
-	static List<String> getSorteableColumns(Class<?> entity) {
-		if (entity.isAnnotationPresent(Entity.class)) {
-			return EntityScanUtil.getAllFields(entity)
-					.stream()
-					.filter(isSpecialColumnType(SorteableColumn.class))
-					.map(Field::getName)
-					.collect(Collectors.toList());
-		}
-		return Collections.emptyList();
-	}
+  static List<String> getSorteableColumns(Class<?> entity) {
+    if (entity.isAnnotationPresent(Entity.class)) {
+      return EntityScanUtil.getAllFields(entity).stream()
+          .filter(isSpecialColumnType(SorteableColumn.class))
+          .map(Field::getName)
+          .collect(Collectors.toList());
+    }
+    return Collections.emptyList();
+  }
 
-	static List<String> getFilterableColumns(Class<?> entity) {
-		if (entity.isAnnotationPresent(Entity.class)) {
-			return EntityScanUtil.getAllFields(entity)
-					.stream()
-					.filter(isSpecialColumnType(FilterableColumn.class))
-					.map(Field::getName)
-					.collect(Collectors.toList());
-		}
-		return Collections.emptyList();
-	}
-
+  static List<String> getFilterableColumns(Class<?> entity) {
+    if (entity.isAnnotationPresent(Entity.class)) {
+      return EntityScanUtil.getAllFields(entity).stream()
+          .filter(isSpecialColumnType(FilterableColumn.class))
+          .map(Field::getName)
+          .collect(Collectors.toList());
+    }
+    return Collections.emptyList();
+  }
 }

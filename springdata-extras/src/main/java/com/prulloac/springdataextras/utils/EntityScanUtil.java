@@ -5,21 +5,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @author Prulloac
- */
+/** @author Prulloac */
 public interface EntityScanUtil {
 
-	static List<Field> getAllFields(Class<?> type) {
-		return getAllFields(new ArrayList<>(), type);
-	}
+  static List<Field> getAllFields(Class<?> type) {
+    return getAllFields(new ArrayList<>(), type);
+  }
 
-	private static List<Field> getAllFields(List<Field> fieldList, Class<?> type) {
-		fieldList.addAll(Arrays.asList(type.getDeclaredFields()));
-		if (type.getSuperclass() != null) {
-			getAllFields(fieldList, type.getSuperclass());
-		}
-		return fieldList;
-	}
-
+  private static List<Field> getAllFields(List<Field> fieldList, Class<?> type) {
+    fieldList.addAll(Arrays.asList(type.getDeclaredFields()));
+    if (type.getSuperclass() != null) {
+      getAllFields(fieldList, type.getSuperclass());
+    }
+    return fieldList;
+  }
 }
