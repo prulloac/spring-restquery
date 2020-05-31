@@ -158,10 +158,6 @@ public enum QueryOperation {
     this.identifier = identifier;
   }
 
-  public String getIdentifier() {
-    return identifier;
-  }
-
   public static QueryOperation parse(String operation) {
     for (QueryOperation o : QueryOperation.values()) {
       if (o.identifier.equals(operation)) {
@@ -169,5 +165,9 @@ public enum QueryOperation {
       }
     }
     return null;
+  }
+
+  public String getIdentifier() {
+    return identifier;
   }
 }

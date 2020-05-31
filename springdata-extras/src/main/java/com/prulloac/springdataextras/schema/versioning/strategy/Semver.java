@@ -3,17 +3,12 @@ package com.prulloac.springdataextras.schema.versioning.strategy;
 import com.google.common.collect.ComparisonChain;
 import com.prulloac.springdataextras.schema.versioning.BaseVersionEntity;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /** @author Prulloac */
 public class Semver implements VersionStrategy {
-  private static final String STRATEGY_NAME = "Semver";
   private static final String VERIFICATION_PATTERN = "^\\d+\\.\\d+\\.\\d+$";
-
-  @Override
-  public String name() {
-    return STRATEGY_NAME;
-  }
 
   @Override
   public String nextVersion(String currentVersion) {
@@ -31,7 +26,7 @@ public class Semver implements VersionStrategy {
   }
 
   @Override
-  public Comparator<BaseVersionEntity> comparator() {
+  public <T extends Serializable> Comparator<BaseVersionEntity<T>> comparator() {
     return (o1, o2) -> {
       String[] thisSemverParts = o1.getVersion().split("\\.");
       String[] thatSemverParts = o2.getVersion().split("\\.");

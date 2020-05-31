@@ -5,22 +5,22 @@ import com.prulloac.springdataextras.schema.versioning.BaseVersionEntity;
 import java.io.Serializable;
 import java.util.Comparator;
 
-/** @author Prulloac */
-public class Identity implements VersionStrategy {
-  private static final String VERIFICATION_PATTERN = "^\\d+$";
+public class SomeVersionStrategyWithInvalidConstructor implements VersionStrategy {
+
+  private SomeVersionStrategyWithInvalidConstructor() {}
 
   @Override
   public String nextVersion(String currentVersion) {
-    return String.valueOf(1 + Integer.parseInt(currentVersion));
+    return null;
   }
 
   @Override
   public String verificationPattern() {
-    return VERIFICATION_PATTERN;
+    return null;
   }
 
   @Override
   public <T extends Serializable> Comparator<BaseVersionEntity<T>> comparator() {
-    return Comparator.comparing(o -> Long.valueOf(o.getVersion()));
+    return null;
   }
 }

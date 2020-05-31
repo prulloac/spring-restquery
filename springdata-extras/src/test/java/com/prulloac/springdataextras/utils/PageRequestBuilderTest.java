@@ -3,7 +3,7 @@ package com.prulloac.springdataextras.utils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import com.prulloac.springdataextras.Pojo;
+import com.prulloac.springdataextras.schema.DummyEntity;
 import com.prulloac.springdataextras.annotation.SorteableColumn;
 import org.junit.jupiter.api.Test;
 
@@ -15,10 +15,6 @@ import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
 public class PageRequestBuilderTest {
-
-  class PojoNotEntity {
-    @SorteableColumn @Column String field;
-  }
 
   @Test
   public void pageRequestNoSort() {
@@ -46,19 +42,23 @@ public class PageRequestBuilderTest {
     String[] sortComboDesc = new String[] {"field:desc"};
     String[] badSortCombo = new String[] {"badField:asc"};
     assertThat(
-        PageRequestBuilder.buildRequest(0, 10, sortComboAsc, Pojo.class), equalTo(expectedAsc));
+        PageRequestBuilder.buildRequest(0, 10, sortComboAsc, DummyEntity.class), equalTo(expectedAsc));
     assertThat(
-        PageRequestBuilder.buildRequest(0, 10, sortComboDesc, Pojo.class), equalTo(expectedDesc));
+        PageRequestBuilder.buildRequest(0, 10, sortComboDesc, DummyEntity.class), equalTo(expectedDesc));
     assertThat(
-        PageRequestBuilder.buildRequest(0, 10, badSortCombo, Pojo.class), equalTo(expectedNoSort));
+        PageRequestBuilder.buildRequest(0, 10, badSortCombo, DummyEntity.class), equalTo(expectedNoSort));
     assertThat(
         PageRequestBuilder.buildRequest(0, 10, sortComboAsc, PojoNotEntity.class),
         equalTo(expectedNoSort));
     assertThat(
-        PageRequestBuilder.buildRequest(0, 10, sortComboFieldNotColumn, Pojo.class),
+        PageRequestBuilder.buildRequest(0, 10, sortComboFieldNotColumn, DummyEntity.class),
         equalTo(expectedNoSort));
     assertThat(
-        PageRequestBuilder.buildRequest(0, 10, sortComboFieldNotSorteable, Pojo.class),
+        PageRequestBuilder.buildRequest(0, 10, sortComboFieldNotSorteable, DummyEntity.class),
         equalTo(expectedNoSort));
+  }
+
+  class PojoNotEntity {
+    @SorteableColumn @Column String field;
   }
 }

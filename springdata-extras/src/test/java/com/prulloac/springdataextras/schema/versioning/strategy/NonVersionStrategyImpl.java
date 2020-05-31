@@ -1,3 +1,5 @@
 package com.prulloac.springdataextras.schema.versioning.strategy;
 
-public class NonVersionStrategyImpl {}
+import java.io.Serializable;
+
+public class NonVersionStrategyImpl implements Serializable {}

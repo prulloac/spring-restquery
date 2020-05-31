@@ -2,6 +2,7 @@ package com.prulloac.springdataextras.schema.versioning.strategy;
 
 import com.prulloac.springdataextras.schema.versioning.BaseVersionEntity;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 public class SomeVersionStrategyImpl implements VersionStrategy {
@@ -22,7 +23,7 @@ public class SomeVersionStrategyImpl implements VersionStrategy {
   }
 
   @Override
-  public Comparator<BaseVersionEntity> comparator() {
+  public <T extends Serializable> Comparator<BaseVersionEntity<T>> comparator() {
     return null;
   }
 }

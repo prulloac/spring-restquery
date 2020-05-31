@@ -1,4 +1,4 @@
-package com.prulloac.springdataextras;
+package com.prulloac.springdataextras.schema;
 
 import com.prulloac.springdataextras.annotation.FilterableColumn;
 import com.prulloac.springdataextras.annotation.SorteableColumn;
@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Pojo {
+public class DummyEntity {
 
   @SorteableColumn @FilterableColumn @Column @Id public Long id;
 
