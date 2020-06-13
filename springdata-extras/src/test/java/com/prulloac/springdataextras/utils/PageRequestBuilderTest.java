@@ -3,8 +3,8 @@ package com.prulloac.springdataextras.utils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import com.prulloac.springdataextras.schema.DummyEntity;
 import com.prulloac.springdataextras.annotation.SorteableColumn;
+import com.prulloac.springdataextras.schema.DummyEntity;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.Column;
@@ -42,11 +42,14 @@ public class PageRequestBuilderTest {
     String[] sortComboDesc = new String[] {"field:desc"};
     String[] badSortCombo = new String[] {"badField:asc"};
     assertThat(
-        PageRequestBuilder.buildRequest(0, 10, sortComboAsc, DummyEntity.class), equalTo(expectedAsc));
+        PageRequestBuilder.buildRequest(0, 10, sortComboAsc, DummyEntity.class),
+        equalTo(expectedAsc));
     assertThat(
-        PageRequestBuilder.buildRequest(0, 10, sortComboDesc, DummyEntity.class), equalTo(expectedDesc));
+        PageRequestBuilder.buildRequest(0, 10, sortComboDesc, DummyEntity.class),
+        equalTo(expectedDesc));
     assertThat(
-        PageRequestBuilder.buildRequest(0, 10, badSortCombo, DummyEntity.class), equalTo(expectedNoSort));
+        PageRequestBuilder.buildRequest(0, 10, badSortCombo, DummyEntity.class),
+        equalTo(expectedNoSort));
     assertThat(
         PageRequestBuilder.buildRequest(0, 10, sortComboAsc, PojoNotEntity.class),
         equalTo(expectedNoSort));

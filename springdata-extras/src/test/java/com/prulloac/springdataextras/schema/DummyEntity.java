@@ -6,6 +6,8 @@ import com.prulloac.springdataextras.annotation.SorteableColumn;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class DummyEntity {
@@ -21,4 +23,30 @@ public class DummyEntity {
   @Column public String fieldNotFilterable;
 
   @SorteableColumn public String fieldNotColumn;
+
+  @JoinColumn @ManyToOne public DummyContainerEntity container;
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getField() {
+    return field;
+  }
+
+  public int getOtherField() {
+    return otherField;
+  }
+
+  public String getFieldNotSorteable() {
+    return fieldNotSorteable;
+  }
+
+  public String getFieldNotFilterable() {
+    return fieldNotFilterable;
+  }
+
+  public String getFieldNotColumn() {
+    return fieldNotColumn;
+  }
 }

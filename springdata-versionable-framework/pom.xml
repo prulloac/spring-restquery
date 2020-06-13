@@ -10,9 +10,9 @@
     </parent>
 
     <groupId>com.prulloac</groupId>
-    <artifactId>springdata-extras</artifactId>
+    <artifactId>springdata-versionable-framework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springdata-extras</name>
+    <name>springdata-versionable-framework</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
