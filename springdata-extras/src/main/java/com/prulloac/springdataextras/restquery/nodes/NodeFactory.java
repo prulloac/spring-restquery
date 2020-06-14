@@ -1,33 +1,42 @@
-package com.prulloac.springdataextras.specification.nodes;
+package com.prulloac.springdataextras.restquery.nodes;
 
 import com.google.re2j.Pattern;
-import com.prulloac.springdataextras.specification.nodes.comparison.DistinctNode;
-import com.prulloac.springdataextras.specification.nodes.comparison.EqualsNode;
-import com.prulloac.springdataextras.specification.nodes.comparison.NotNullNode;
-import com.prulloac.springdataextras.specification.nodes.comparison.NullNode;
-import com.prulloac.springdataextras.specification.nodes.logical.AndNode;
-import com.prulloac.springdataextras.specification.nodes.logical.NotNode;
-import com.prulloac.springdataextras.specification.nodes.logical.OrNode;
-import com.prulloac.springdataextras.specification.operators.QueryOperator;
+import com.prulloac.springdataextras.restquery.nodes.comparison.DistinctNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.EqualsNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.GreaterThanNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.LessThanNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.NotNullNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.NullNode;
+import com.prulloac.springdataextras.restquery.nodes.logical.AndNode;
+import com.prulloac.springdataextras.restquery.nodes.logical.NotNode;
+import com.prulloac.springdataextras.restquery.nodes.logical.OrNode;
+import com.prulloac.springdataextras.restquery.operators.QueryOperator;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.prulloac.springdataextras.specification.operators.ComparisonOperator.DISTINCT;
-import static com.prulloac.springdataextras.specification.operators.ComparisonOperator.EQUAL;
-import static com.prulloac.springdataextras.specification.operators.ComparisonOperator.NOT_NULL;
-import static com.prulloac.springdataextras.specification.operators.ComparisonOperator.NULL;
-import static com.prulloac.springdataextras.specification.operators.LogicalOperator.AND;
-import static com.prulloac.springdataextras.specification.operators.LogicalOperator.NOT;
-import static com.prulloac.springdataextras.specification.operators.LogicalOperator.OR;
-import static com.prulloac.springdataextras.utils.Constants.REGEX_PATTERN_NOT_LOGICAL_NODE;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.DISTINCT;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.EQUAL;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.GREATER_THAN;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.LESS_THAN;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.NOT_NULL;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.NULL;
+import static com.prulloac.springdataextras.restquery.operators.LogicalOperator.AND;
+import static com.prulloac.springdataextras.restquery.operators.LogicalOperator.NOT;
+import static com.prulloac.springdataextras.restquery.operators.LogicalOperator.OR;
 
 /** @author Prulloac */
-public interface NodeFactory {
+public class NodeFactory {
+  private static final Pattern REGEX_PATTERN_NOT_LOGICAL_NODE =
+      Pattern.compile(NOT.getRegexForRepresentations());
 
-  static QueryNode getNode(String query) {
+  private NodeFactory() {
+    super();
+  }
+
+  public static QueryNode getNode(String query) {
     if (hasOperatorExpression(query, OR)) {
       return createOrNode(query.trim());
     }
@@ -47,14 +56,14 @@ public interface NodeFactory {
       if (parts.length != 2) {
         throw new IllegalArgumentException();
       }
-      return new DistinctNode(parts[0], Arrays.asList(parts[1].split(",")));
+      return new DistinctNode(parts[0], parts[1].split(","));
     }
     if (hasOperatorExpression(query, EQUAL)) {
       parts = query.split(EQUAL.getRegexForRepresentations());
       if (parts.length != 2) {
         throw new IllegalArgumentException();
       }
-      return new EqualsNode(parts[0], Arrays.asList(parts[1].split(",")));
+      return new EqualsNode(parts[0], parts[1].split(","));
     }
     if (hasOperatorExpression(query, NULL)) {
       parts = query.split(NULL.getRegexForRepresentations());
@@ -69,6 +78,20 @@ public interface NodeFactory {
         throw new IllegalArgumentException();
       }
       return new NotNullNode(parts[0]);
+    }
+    if (hasOperatorExpression(query, GREATER_THAN)) {
+      parts = query.split(GREATER_THAN.getRegexForRepresentations());
+      if (parts.length != 2) {
+        throw new IllegalArgumentException();
+      }
+      return new GreaterThanNode(parts[0], parts[1]);
+    }
+    if (hasOperatorExpression(query, LESS_THAN)) {
+      parts = query.split(LESS_THAN.getRegexForRepresentations());
+      if (parts.length != 2) {
+        throw new IllegalArgumentException();
+      }
+      return new LessThanNode(parts[0], parts[1]);
     }
     throw new IllegalArgumentException();
   }

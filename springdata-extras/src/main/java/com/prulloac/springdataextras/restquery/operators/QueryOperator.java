@@ -1,4 +1,4 @@
-package com.prulloac.springdataextras.specification.operators;
+package com.prulloac.springdataextras.restquery.operators;
 
 import com.prulloac.springdataextras.utils.Constants;
 

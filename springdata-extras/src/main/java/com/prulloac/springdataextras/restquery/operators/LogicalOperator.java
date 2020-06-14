@@ -1,4 +1,4 @@
-package com.prulloac.springdataextras.specification.operators;
+package com.prulloac.springdataextras.restquery.operators;
 
 /** @author Prulloac */
 public enum LogicalOperator implements QueryOperator {

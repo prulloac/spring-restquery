@@ -1,8 +1,9 @@
-package com.prulloac.springdataextras.specification.nodes.logical;
+package com.prulloac.springdataextras.restquery.nodes.logical;
 
-import com.prulloac.springdataextras.specification.nodes.QueryNode;
-import com.prulloac.springdataextras.specification.operators.LogicalOperator;
+import com.prulloac.springdataextras.restquery.nodes.QueryNode;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +31,6 @@ public abstract class LogicalNode implements QueryNode, Iterable<QueryNode> {
     return children;
   }
 
-  @Override
-  public abstract LogicalOperator getOperator();
+  public abstract Predicate getPredicate(
+      CriteriaBuilder criteriaBuilder, List<Predicate> predicates);
 }

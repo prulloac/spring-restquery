@@ -1,7 +1,6 @@
-package com.prulloac.springdataextras.specification.nodes.comparison;
+package com.prulloac.springdataextras.restquery.nodes.comparison;
 
-import com.prulloac.springdataextras.specification.nodes.QueryNode;
-import com.prulloac.springdataextras.specification.operators.ComparisonOperator;
+import com.prulloac.springdataextras.restquery.nodes.QueryNode;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -26,9 +25,5 @@ public abstract class ComparisonNode implements QueryNode {
     return arguments;
   }
 
-  public abstract Predicate getPredicate(
-      Expression propertyPath, CriteriaBuilder criteriaBuilder, List<String> values);
-
-  @Override
-  public abstract ComparisonOperator getOperator();
+  public abstract Predicate getPredicate(Expression propertyPath, CriteriaBuilder criteriaBuilder);
 }
