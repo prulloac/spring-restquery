@@ -22,8 +22,8 @@ supports the following SQL operations:
 - Logical operations: AND, OR, NOT
 - Comparison operations:
     * Basic: =, <>, isNull, isNotNull 
-    * Numeric: <, >
-    * String: TBD
+    * Numeric: <, >, <=, >=
+    * String: equals, like, startsWith, endsWith (all with corresponding ignoreCase cases)
     * Date and Time: TBD
     
 The implementation is simply put like this: a given string will be interpreted as a collection of _where_ 
