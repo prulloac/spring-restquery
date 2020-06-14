@@ -56,16 +56,12 @@ public class RestQuery<T> implements Specification<T> {
     }
   }
 
-  public QueryNode getQueryNode() {
-    return baseNode;
-  }
-
   private Predicate createPredicate(
       QueryNode node, Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
     if (node instanceof LogicalNode) {
       return createLogicalPredicate((LogicalNode) node, root, query, criteriaBuilder);
     } else if (node instanceof ComparisonNode) {
-      return createComparisonPredicate((ComparisonNode) node, root, query, criteriaBuilder);
+      return createComparisonPredicate((ComparisonNode) node, root, criteriaBuilder);
     }
     throw new IllegalArgumentException();
   }
@@ -78,9 +74,9 @@ public class RestQuery<T> implements Specification<T> {
   }
 
   public Predicate createComparisonPredicate(
-      ComparisonNode node, Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+      ComparisonNode node, Root<T> root, CriteriaBuilder criteriaBuilder) {
     String field = node.getField();
-    Expression propertyPath = findPropertyPath(field, root);
+    Expression<?> propertyPath = findPropertyPath(field, root);
     return node.getPredicate(propertyPath, criteriaBuilder);
   }
 
@@ -91,7 +87,7 @@ public class RestQuery<T> implements Specification<T> {
     for (String node : fieldGraph) {
       Set<Attribute<?, ?>> attributes = (Set<Attribute<?, ?>>) baseType.getAttributes();
       if (attributes.stream().map(Attribute::getName).anyMatch(node::equals)) {
-        Attribute attribute = baseType.getAttribute(node);
+        Attribute<?, ?> attribute = baseType.getAttribute(node);
         if (attribute.isAssociation()) {
           baseType = attribute.getDeclaringType();
           if (base instanceof Join) {

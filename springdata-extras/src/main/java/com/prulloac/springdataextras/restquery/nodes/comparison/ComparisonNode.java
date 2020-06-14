@@ -25,5 +25,6 @@ public abstract class ComparisonNode implements QueryNode {
     return arguments;
   }
 
-  public abstract Predicate getPredicate(Expression propertyPath, CriteriaBuilder criteriaBuilder);
+  public abstract Predicate getPredicate(
+      Expression<?> propertyPath, CriteriaBuilder criteriaBuilder);
 }

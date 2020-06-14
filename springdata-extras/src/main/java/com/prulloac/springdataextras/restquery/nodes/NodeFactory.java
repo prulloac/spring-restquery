@@ -50,54 +50,57 @@ public class NodeFactory {
   }
 
   private static QueryNode createComparisonNode(String query) {
-    String[] parts;
     if (hasOperatorExpression(query, DISTINCT)) {
-      parts = query.split(DISTINCT.getRegexForRepresentations());
-      if (parts.length != 2) {
-        throw new IllegalArgumentException();
-      }
-      return new DistinctNode(parts[0], parts[1].split(","));
+      return createDistinctNode(query);
     }
     if (hasOperatorExpression(query, EQUAL)) {
-      parts = query.split(EQUAL.getRegexForRepresentations());
-      if (parts.length != 2) {
-        throw new IllegalArgumentException();
-      }
-      return new EqualsNode(parts[0], parts[1].split(","));
-    }
-    if (hasOperatorExpression(query, NULL)) {
-      parts = query.split(NULL.getRegexForRepresentations());
-      if (parts.length != 1) {
-        throw new IllegalArgumentException();
-      }
-      return new NullNode(parts[0]);
+      return createEqualNode(query);
     }
     if (hasOperatorExpression(query, NOT_NULL)) {
-      parts = query.split(NOT_NULL.getRegexForRepresentations());
-      if (parts.length != 1) {
-        throw new IllegalArgumentException();
-      }
-      return new NotNullNode(parts[0]);
+      return createNotNullNode(query);
     }
+    if (hasOperatorExpression(query, NULL)) {
+      return createNullNode(query);
+    }
+    return createNumericComparisonNode(query);
+  }
+
+  private static QueryNode createNumericComparisonNode(String query) {
     if (hasOperatorExpression(query, GREATER_THAN)) {
-      parts = query.split(GREATER_THAN.getRegexForRepresentations());
-      if (parts.length != 2) {
-        throw new IllegalArgumentException();
-      }
-      return new GreaterThanNode(parts[0], parts[1]);
+      return createGreaterThanNode(query);
     }
     if (hasOperatorExpression(query, LESS_THAN)) {
-      parts = query.split(LESS_THAN.getRegexForRepresentations());
-      if (parts.length != 2) {
-        throw new IllegalArgumentException();
-      }
-      return new LessThanNode(parts[0], parts[1]);
+      return createLessThanNode(query);
     }
-    throw new IllegalArgumentException();
+    return createStringComparisonNode(query);
+  }
+
+  private static QueryNode createStringComparisonNode(String query) {
+    return createTimeAndDateComparisonNode(query);
+  }
+
+  private static QueryNode createTimeAndDateComparisonNode(String query) {
+    return null;
+  }
+
+  private static QueryNode createOrNode(String query) {
+    List<QueryNode> children =
+        Arrays.stream(splitQueryForOperator(query, OR))
+            .map(NodeFactory::getNode)
+            .collect(Collectors.toList());
+    return new OrNode(children);
+  }
+
+  private static QueryNode createAndNode(String query) {
+    List<QueryNode> children =
+        Arrays.stream(splitQueryForOperator(query, AND))
+            .map(NodeFactory::getNode)
+            .collect(Collectors.toList());
+    return new AndNode(children);
   }
 
   private static QueryNode createNotNode(String query) {
-    String[] parts = query.split(NOT.getRegexForRepresentations());
+    String[] parts = splitQueryForOperator(query, NOT);
     if (parts.length > 2) {
       throw new IllegalArgumentException();
     }
@@ -105,24 +108,60 @@ public class NodeFactory {
     return new NotNode(Collections.singletonList(getNode(newQuery)));
   }
 
-  private static QueryNode createAndNode(String query) {
-    List<QueryNode> children =
-        Arrays.stream(query.split(AND.getRegexForRepresentations()))
-            .map(NodeFactory::getNode)
-            .collect(Collectors.toList());
-    return new AndNode(children);
+  private static QueryNode createDistinctNode(String query) {
+    String[] parts = splitQueryForOperator(query, DISTINCT);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException();
+    }
+    return new DistinctNode(parts[0], parts[1].split(","));
   }
 
-  private static QueryNode createOrNode(String query) {
-    List<QueryNode> children =
-        Arrays.stream(query.split(OR.getRegexForRepresentations()))
-            .map(NodeFactory::getNode)
-            .collect(Collectors.toList());
-    return new OrNode(children);
+  private static QueryNode createEqualNode(String query) {
+    String[] parts = splitQueryForOperator(query, EQUAL);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException();
+    }
+    return new EqualsNode(parts[0], parts[1].split(","));
+  }
+
+  private static QueryNode createNotNullNode(String query) {
+    String[] parts = splitQueryForOperator(query, NOT_NULL);
+    if (parts.length != 1) {
+      throw new IllegalArgumentException();
+    }
+    return new NotNullNode(parts[0]);
+  }
+
+  private static QueryNode createNullNode(String query) {
+    String[] parts = splitQueryForOperator(query, NULL);
+    if (parts.length != 1) {
+      throw new IllegalArgumentException();
+    }
+    return new NullNode(parts[0]);
+  }
+
+  private static QueryNode createGreaterThanNode(String query) {
+    String[] parts = splitQueryForOperator(query, GREATER_THAN);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException();
+    }
+    return new GreaterThanNode(parts[0], parts[1]);
+  }
+
+  private static QueryNode createLessThanNode(String query) {
+    String[] parts = splitQueryForOperator(query, LESS_THAN);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException();
+    }
+    return new LessThanNode(parts[0], parts[1]);
   }
 
   private static boolean hasOperatorExpression(String query, QueryOperator operator) {
     return Pattern.compile("(.*)(" + operator.getRegexForRepresentations() + ")(.*)")
         .matches(query);
+  }
+
+  private static String[] splitQueryForOperator(String query, QueryOperator operator) {
+    return query.split(operator.getRegexForRepresentations());
   }
 }
