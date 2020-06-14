@@ -16,6 +16,10 @@ public class DummyEntity {
 
   @SorteableColumn @FilterableColumn @Column public String field;
 
+  @Column public int age;
+
+  @Column public float height;
+
   @FilterableColumn @Column public int otherField;
 
   @Column public String fieldNotSorteable;

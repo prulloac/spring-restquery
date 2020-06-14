@@ -10,7 +10,7 @@ import com.prulloac.springdataextras.schema.DummyEntity;
 import org.junit.jupiter.api.BeforeEach;
 
 @DataJpaTest
-public class BaseRestQueryTest {
+public class BaseRestQueryConfig {
 
   @Autowired public TestEntityManager testEntityManager;
   @Autowired public DummyEntityRepository dummyEntityRepository;

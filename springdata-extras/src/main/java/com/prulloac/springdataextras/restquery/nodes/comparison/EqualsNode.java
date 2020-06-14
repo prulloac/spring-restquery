@@ -14,7 +14,7 @@ public class EqualsNode extends ComparisonNode {
 
   @Override
   public Predicate getPredicate(Path<?> propertyPath, CriteriaBuilder criteriaBuilder) {
-    List<String> arguments = getArguments();
+    List<Object> arguments = getArguments();
     Predicate base = criteriaBuilder.equal(propertyPath, arguments.get(0));
     for (int i = 1; i < arguments.size(); i++) {
       Predicate otherCondition = criteriaBuilder.equal(propertyPath, arguments.get(i));

@@ -12,7 +12,7 @@ public class ContainsNode extends ComparisonNode {
 
   @Override
   public Predicate getPredicate(Path propertyPath, CriteriaBuilder criteriaBuilder) {
-    String value = getArguments().get(0);
+    String value = (String) getArguments().get(0);
     return criteriaBuilder.like(propertyPath, "%" + value + "%");
   }
 }

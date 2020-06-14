@@ -1,6 +1,6 @@
 package com.prulloac.springdataextras.restquery.nodes.comparison;
 
-import com.prulloac.springdataextras.restquery.BaseRestQueryTest;
+import com.prulloac.springdataextras.restquery.BaseRestQueryConfig;
 import com.prulloac.springdataextras.restquery.specification.RestQuery;
 import com.prulloac.springdataextras.schema.DummyEntity;
 import org.junit.jupiter.api.Test;
@@ -12,9 +12,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.*;
 
-class ContainsIgnoreCaseNodeTest extends BaseRestQueryTest {
+class ContainsIgnoreCaseNodeTest extends BaseRestQueryConfig {
 
   @Test
   void getPredicate() {
@@ -25,7 +24,7 @@ class ContainsIgnoreCaseNodeTest extends BaseRestQueryTest {
     List<DummyEntity> results = dummyEntityRepository.findAll(restQuery);
     List<DummyEntity> results2 = dummyEntityRepository.findAll(restQuery2);
     assertThat(
-            results.stream().map(DummyEntity::getField).collect(Collectors.toList()), hasItem("testB"));
+        results.stream().map(DummyEntity::getField).collect(Collectors.toList()), hasItem("testB"));
     assertThat(results2, not(empty()));
   }
 }

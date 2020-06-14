@@ -4,7 +4,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import java.math.BigDecimal;
-import java.util.Collections;
 
 /** @author Prulloac */
 public class GreaterThanEqualsNode extends ComparisonNode {
@@ -13,27 +12,15 @@ public class GreaterThanEqualsNode extends ComparisonNode {
   }
 
   @Override
-  public Predicate getPredicate(Path propertyPath, CriteriaBuilder criteriaBuilder) {
-    String value = getArguments().get(0);
+  public Predicate getPredicate(Path<?> propertyPath, CriteriaBuilder criteriaBuilder) {
+    String value = (String) getArguments().get(0);
     Class<?> type = propertyPath.getJavaType();
-    if (type.equals(Integer.class) || type.equals(int.class)) {
-      return criteriaBuilder.ge(propertyPath.as(Integer.class), Integer.valueOf(value));
-    }
-    if (type.equals(Long.class) || type.equals(long.class)) {
-      return criteriaBuilder.ge(propertyPath.as(Long.class), Long.valueOf(value));
-    }
-    if (type.equals(Double.class) || type.equals(double.class)) {
+    if (isNativeNumericType(type)) {
       return criteriaBuilder.ge(propertyPath.as(Double.class), Double.valueOf(value));
-    }
-    if (type.equals(Float.class) || type.equals(float.class)) {
-      return criteriaBuilder.ge(propertyPath.as(Float.class), Float.valueOf(value));
-    }
-    if (type.equals(Short.class) || type.equals(short.class)) {
-      return criteriaBuilder.ge(propertyPath.as(Short.class), Short.valueOf(value));
     }
     if (type.isEnum()) {
       return criteriaBuilder.greaterThanOrEqualTo(
-          propertyPath.as(Enum.class), Enum.valueOf((Class<Enum>) type, value));
+          propertyPath.as(Enum.class), Enum.valueOf((Class<? extends Enum>) type, value));
     }
     return criteriaBuilder.ge(propertyPath.as(BigDecimal.class), new BigDecimal(value));
   }

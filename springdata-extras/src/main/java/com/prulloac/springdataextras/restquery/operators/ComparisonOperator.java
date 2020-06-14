@@ -12,11 +12,24 @@ public enum ComparisonOperator implements QueryOperator {
   GREATER_THAN_EQUALS(">=", "gte", "greaterThanEquals", " gte ", " greaterThanEquals "),
   LESS_THAN_EQUALS("<=", "lte", "lessThanEquals", " lte ", " lessThanEquals "),
   STARTS_WITH("startsWith", " startsWith ", "prefix", " prefix", "beginsWith", " beginsWith "),
-  STARTS_WITH_IGNORE_CASE("startsWithIgnoreCase", " startsWithIgnoreCase ", "prefixIgnoreCase", " prefixIgnoreCase ", "beginsWithIgnoreCase", " beginsWithIgnoreCase "),
+  STARTS_WITH_IGNORE_CASE(
+      "startsWithIgnoreCase",
+      " startsWithIgnoreCase ",
+      "prefixIgnoreCase",
+      " prefixIgnoreCase ",
+      "beginsWithIgnoreCase",
+      " beginsWithIgnoreCase "),
   ENDS_WITH("endsWith", " endsWith ", "suffix", " suffix ", "trailing", " trailing "),
-  ENDS_WITH_IGNORE_CASE("endsWithIgnoreCase", " endsWithIgnoreCase ", "suffixIgnoreCase", " suffixIgnoreCase ", "trailingIgnoreCase", " trailingIgnoreCase "),
+  ENDS_WITH_IGNORE_CASE(
+      "endsWithIgnoreCase",
+      " endsWithIgnoreCase ",
+      "suffixIgnoreCase",
+      " suffixIgnoreCase ",
+      "trailingIgnoreCase",
+      " trailingIgnoreCase "),
   CONTAINS("contains", " contains ", "like", " like "),
-  CONTAINS_IGNORE_CASE("containsIgnoreCase", " containsIgnoreCase ", "likeIgnoreCase", " likeIgnoreCase "),
+  CONTAINS_IGNORE_CASE(
+      "containsIgnoreCase", " containsIgnoreCase ", "likeIgnoreCase", " likeIgnoreCase "),
   ;
 
   private final String[] representations;

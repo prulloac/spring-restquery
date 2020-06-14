@@ -1,6 +1,6 @@
 package com.prulloac.springdataextras.restquery.specification;
 
-import com.prulloac.springdataextras.restquery.BaseRestQueryTest;
+import com.prulloac.springdataextras.restquery.BaseRestQueryConfig;
 import com.prulloac.springdataextras.schema.DummyEntity;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 
-public class RestQueryTest extends BaseRestQueryTest {
+public class RestQueryTest extends BaseRestQueryConfig {
 
   @Test
   public void testSpecification() {

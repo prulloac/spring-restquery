@@ -1,6 +1,6 @@
 package com.prulloac.springdataextras.restquery.nodes.comparison;
 
-import com.prulloac.springdataextras.restquery.BaseRestQueryTest;
+import com.prulloac.springdataextras.restquery.BaseRestQueryConfig;
 import com.prulloac.springdataextras.restquery.specification.RestQuery;
 import com.prulloac.springdataextras.schema.DummyEntity;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 
-class EqualsNodeTest extends BaseRestQueryTest {
+class EqualsNodeTest extends BaseRestQueryConfig {
 
   @Test
   void getPredicate() {

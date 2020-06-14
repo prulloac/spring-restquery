@@ -146,130 +146,98 @@ public class NodeFactory {
 
   private static QueryNode createNotNode(String query) {
     String[] parts = splitQueryForOperator(query, NOT);
-    if (parts.length > 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     String newQuery = REGEX_PATTERN_NOT_LOGICAL_NODE.matcher(query).replaceAll(" ");
     return new NotNode(Collections.singletonList(getNode(newQuery)));
   }
 
   private static QueryNode createDistinctNode(String query) {
     String[] parts = splitQueryForOperator(query, DISTINCT);
-    if (parts.length != 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     return new DistinctNode(parts[0], parts[1].split(","));
   }
 
   private static QueryNode createEqualNode(String query) {
     String[] parts = splitQueryForOperator(query, EQUALS);
-    if (parts.length != 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     return new EqualsNode(parts[0], parts[1].split(","));
   }
 
   private static QueryNode createNotNullNode(String query) {
     String[] parts = splitQueryForOperator(query, NOT_NULL);
-    if (parts.length != 1) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 1);
     return new NotNullNode(parts[0]);
   }
 
   private static QueryNode createNullNode(String query) {
     String[] parts = splitQueryForOperator(query, NULL);
-    if (parts.length != 1) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 1);
     return new NullNode(parts[0]);
   }
 
   private static QueryNode createGreaterThanNode(String query) {
     String[] parts = splitQueryForOperator(query, GREATER_THAN);
-    if (parts.length != 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     return new GreaterThanNode(parts[0], parts[1]);
   }
 
   private static QueryNode createLessThanNode(String query) {
     String[] parts = splitQueryForOperator(query, LESS_THAN);
-    if (parts.length != 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     return new LessThanNode(parts[0], parts[1]);
   }
 
   private static QueryNode createEqualsIgnoreCaseNode(String query) {
     String[] parts = splitQueryForOperator(query, EQUALS_IGNORE_CASE);
-    if (parts.length != 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     return new EqualsIgnoreCaseNode(parts[0], parts[1]);
   }
 
   private static QueryNode createGreaterThanEqualsNode(String query) {
     String[] parts = splitQueryForOperator(query, GREATER_THAN_EQUALS);
-    if (parts.length != 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     return new GreaterThanEqualsNode(parts[0], parts[1]);
   }
 
   private static QueryNode createLessThanEqualsNode(String query) {
     String[] parts = splitQueryForOperator(query, LESS_THAN_EQUALS);
-    if (parts.length != 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     return new LessThanEqualsNode(parts[0], parts[1]);
   }
 
   private static QueryNode createStartsWithNode(String query) {
     String[] parts = splitQueryForOperator(query, STARTS_WITH);
-    if (parts.length != 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     return new StartsWithNode(parts[0], parts[1]);
   }
 
   private static QueryNode createStartsWithIgnoreCaseNode(String query) {
     String[] parts = splitQueryForOperator(query, STARTS_WITH_IGNORE_CASE);
-    if (parts.length != 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     return new StartsWithIgnoreCaseNode(parts[0], parts[1]);
   }
 
   private static QueryNode createContainsNode(String query) {
     String[] parts = splitQueryForOperator(query, CONTAINS);
-    if (parts.length != 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     return new ContainsNode(parts[0], parts[1]);
   }
 
   private static QueryNode createContainsIgnoreCaseNode(String query) {
     String[] parts = splitQueryForOperator(query, CONTAINS_IGNORE_CASE);
-    if (parts.length != 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     return new ContainsIgnoreCaseNode(parts[0], parts[1]);
   }
 
   private static QueryNode createEndsWithNode(String query) {
     String[] parts = splitQueryForOperator(query, ENDS_WITH);
-    if (parts.length != 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     return new EndsWithNode(parts[0], parts[1]);
   }
 
   private static QueryNode createEndsWithIgnoreCaseNode(String query) {
     String[] parts = splitQueryForOperator(query, ENDS_WITH_IGNORE_CASE);
-    if (parts.length != 2) {
-      throw new IllegalArgumentException();
-    }
+    assertPartsLength(parts, 2);
     return new EndsWithIgnoreCaseNode(parts[0], parts[1]);
   }
 
@@ -280,5 +248,11 @@ public class NodeFactory {
 
   private static String[] splitQueryForOperator(String query, QueryOperator operator) {
     return query.split(operator.getRegexForRepresentations());
+  }
+
+  private static void assertPartsLength(String[] parts, int expectedLength) {
+    if (parts.length != expectedLength) {
+      throw new IllegalArgumentException();
+    }
   }
 }

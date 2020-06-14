@@ -11,7 +11,7 @@ public class EqualsIgnoreCaseNode extends ComparisonNode {
 
   @Override
   public Predicate getPredicate(Path propertyPath, CriteriaBuilder criteriaBuilder) {
-    String value = getArguments().get(0);
+    String value = (String) getArguments().get(0);
     return criteriaBuilder.equal(criteriaBuilder.upper(propertyPath), value.toUpperCase());
   }
 }
