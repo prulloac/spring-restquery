@@ -1,12 +1,21 @@
 package com.prulloac.springdataextras.restquery.nodes;
 
 import com.google.re2j.Pattern;
+import com.prulloac.springdataextras.restquery.nodes.comparison.ContainsIgnoreCaseNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.ContainsNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.DistinctNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.EndsWithIgnoreCaseNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.EndsWithNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.EqualsIgnoreCaseNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.EqualsNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.GreaterThanEqualsNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.GreaterThanNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.LessThanEqualsNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.LessThanNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.NotNullNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.NullNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.StartsWithIgnoreCaseNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.StartsWithNode;
 import com.prulloac.springdataextras.restquery.nodes.logical.AndNode;
 import com.prulloac.springdataextras.restquery.nodes.logical.NotNode;
 import com.prulloac.springdataextras.restquery.nodes.logical.OrNode;
@@ -17,12 +26,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.CONTAINS;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.CONTAINS_IGNORE_CASE;
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.DISTINCT;
-import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.EQUAL;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.ENDS_WITH;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.ENDS_WITH_IGNORE_CASE;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.EQUALS;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.EQUALS_IGNORE_CASE;
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.GREATER_THAN;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.GREATER_THAN_EQUALS;
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.LESS_THAN;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.LESS_THAN_EQUALS;
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.NOT_NULL;
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.NULL;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.STARTS_WITH;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.STARTS_WITH_IGNORE_CASE;
 import static com.prulloac.springdataextras.restquery.operators.LogicalOperator.AND;
 import static com.prulloac.springdataextras.restquery.operators.LogicalOperator.NOT;
 import static com.prulloac.springdataextras.restquery.operators.LogicalOperator.OR;
@@ -53,29 +71,56 @@ public class NodeFactory {
     if (hasOperatorExpression(query, DISTINCT)) {
       return createDistinctNode(query);
     }
-    if (hasOperatorExpression(query, EQUAL)) {
-      return createEqualNode(query);
+    if (hasOperatorExpression(query, GREATER_THAN_EQUALS)) {
+      return createGreaterThanEqualsNode(query);
     }
-    if (hasOperatorExpression(query, NOT_NULL)) {
-      return createNotNullNode(query);
+    if (hasOperatorExpression(query, LESS_THAN_EQUALS)) {
+      return createLessThanEqualsNode(query);
     }
-    if (hasOperatorExpression(query, NULL)) {
-      return createNullNode(query);
-    }
-    return createNumericComparisonNode(query);
-  }
-
-  private static QueryNode createNumericComparisonNode(String query) {
     if (hasOperatorExpression(query, GREATER_THAN)) {
       return createGreaterThanNode(query);
     }
     if (hasOperatorExpression(query, LESS_THAN)) {
       return createLessThanNode(query);
     }
+    if (hasOperatorExpression(query, EQUALS)) {
+      return createEqualNode(query);
+    }
+    return createNullComparisonNode(query);
+  }
+
+  private static QueryNode createNullComparisonNode(String query) {
+    if (hasOperatorExpression(query, NOT_NULL)) {
+      return createNotNullNode(query);
+    }
+    if (hasOperatorExpression(query, NULL)) {
+      return createNullNode(query);
+    }
     return createStringComparisonNode(query);
   }
 
   private static QueryNode createStringComparisonNode(String query) {
+    if (hasOperatorExpression(query, EQUALS_IGNORE_CASE)) {
+      return createEqualsIgnoreCaseNode(query);
+    }
+    if (hasOperatorExpression(query, STARTS_WITH_IGNORE_CASE)) {
+      return createStartsWithIgnoreCaseNode(query);
+    }
+    if (hasOperatorExpression(query, CONTAINS_IGNORE_CASE)) {
+      return createContainsIgnoreCaseNode(query);
+    }
+    if (hasOperatorExpression(query, ENDS_WITH_IGNORE_CASE)) {
+      return createEndsWithIgnoreCaseNode(query);
+    }
+    if (hasOperatorExpression(query, STARTS_WITH)) {
+      return createStartsWithNode(query);
+    }
+    if (hasOperatorExpression(query, CONTAINS)) {
+      return createContainsNode(query);
+    }
+    if (hasOperatorExpression(query, ENDS_WITH)) {
+      return createEndsWithNode(query);
+    }
     return createTimeAndDateComparisonNode(query);
   }
 
@@ -117,7 +162,7 @@ public class NodeFactory {
   }
 
   private static QueryNode createEqualNode(String query) {
-    String[] parts = splitQueryForOperator(query, EQUAL);
+    String[] parts = splitQueryForOperator(query, EQUALS);
     if (parts.length != 2) {
       throw new IllegalArgumentException();
     }
@@ -154,6 +199,78 @@ public class NodeFactory {
       throw new IllegalArgumentException();
     }
     return new LessThanNode(parts[0], parts[1]);
+  }
+
+  private static QueryNode createEqualsIgnoreCaseNode(String query) {
+    String[] parts = splitQueryForOperator(query, EQUALS_IGNORE_CASE);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException();
+    }
+    return new EqualsIgnoreCaseNode(parts[0], parts[1]);
+  }
+
+  private static QueryNode createGreaterThanEqualsNode(String query) {
+    String[] parts = splitQueryForOperator(query, GREATER_THAN_EQUALS);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException();
+    }
+    return new GreaterThanEqualsNode(parts[0], parts[1]);
+  }
+
+  private static QueryNode createLessThanEqualsNode(String query) {
+    String[] parts = splitQueryForOperator(query, LESS_THAN_EQUALS);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException();
+    }
+    return new LessThanEqualsNode(parts[0], parts[1]);
+  }
+
+  private static QueryNode createStartsWithNode(String query) {
+    String[] parts = splitQueryForOperator(query, STARTS_WITH);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException();
+    }
+    return new StartsWithNode(parts[0], parts[1]);
+  }
+
+  private static QueryNode createStartsWithIgnoreCaseNode(String query) {
+    String[] parts = splitQueryForOperator(query, STARTS_WITH_IGNORE_CASE);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException();
+    }
+    return new StartsWithIgnoreCaseNode(parts[0], parts[1]);
+  }
+
+  private static QueryNode createContainsNode(String query) {
+    String[] parts = splitQueryForOperator(query, CONTAINS);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException();
+    }
+    return new ContainsNode(parts[0], parts[1]);
+  }
+
+  private static QueryNode createContainsIgnoreCaseNode(String query) {
+    String[] parts = splitQueryForOperator(query, CONTAINS_IGNORE_CASE);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException();
+    }
+    return new ContainsIgnoreCaseNode(parts[0], parts[1]);
+  }
+
+  private static QueryNode createEndsWithNode(String query) {
+    String[] parts = splitQueryForOperator(query, ENDS_WITH);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException();
+    }
+    return new EndsWithNode(parts[0], parts[1]);
+  }
+
+  private static QueryNode createEndsWithIgnoreCaseNode(String query) {
+    String[] parts = splitQueryForOperator(query, ENDS_WITH_IGNORE_CASE);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException();
+    }
+    return new EndsWithIgnoreCaseNode(parts[0], parts[1]);
   }
 
   private static boolean hasOperatorExpression(String query, QueryOperator operator) {

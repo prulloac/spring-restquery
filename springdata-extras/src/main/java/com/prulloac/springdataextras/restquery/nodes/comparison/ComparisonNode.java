@@ -3,8 +3,9 @@ package com.prulloac.springdataextras.restquery.nodes.comparison;
 import com.prulloac.springdataextras.restquery.nodes.QueryNode;
 
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
+import java.util.Collections;
 import java.util.List;
 
 /** @author Prulloac */
@@ -17,6 +18,10 @@ public abstract class ComparisonNode implements QueryNode {
     this.arguments = arguments;
   }
 
+  protected ComparisonNode(String field, String value) {
+    this(field, Collections.singletonList(value));
+  }
+
   public String getField() {
     return field;
   }
@@ -25,6 +30,5 @@ public abstract class ComparisonNode implements QueryNode {
     return arguments;
   }
 
-  public abstract Predicate getPredicate(
-      Expression<?> propertyPath, CriteriaBuilder criteriaBuilder);
+  public abstract Predicate getPredicate(Path<?> propertyPath, CriteriaBuilder criteriaBuilder);
 }

@@ -12,7 +12,6 @@ import com.prulloac.springdataextras.restquery.nodes.logical.LogicalNode;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
@@ -76,7 +75,7 @@ public class RestQuery<T> implements Specification<T> {
   public Predicate createComparisonPredicate(
       ComparisonNode node, Root<T> root, CriteriaBuilder criteriaBuilder) {
     String field = node.getField();
-    Expression<?> propertyPath = findPropertyPath(field, root);
+    Path<?> propertyPath = findPropertyPath(field, root);
     return node.getPredicate(propertyPath, criteriaBuilder);
   }
 
