@@ -27,6 +27,8 @@ jobs:
       jdk: openjdk11
       script: mvn jacoco:prepare-agent verify jacoco:report
       env: COVERAGE=true
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
 
     # 1.4 Javadoc
     - jdk: openjdk11
