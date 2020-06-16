@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/prulloac/spring-extras.svg?branch=develop)](https://travis-ci.com/prulloac/spring-extras)
+[![codecov](https://codecov.io/gh/prulloac/spring-extras/branch/develop/graph/badge.svg)](https://codecov.io/gh/prulloac/spring-extras)
+
 #Spring-extras
 
  This repository contains my personal extras to be used among the spring framework
