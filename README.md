@@ -1,7 +1,8 @@
 [![Build Status](https://travis-ci.com/prulloac/spring-extras.svg?branch=develop)](https://travis-ci.com/prulloac/spring-extras)
 [![codecov](https://codecov.io/gh/prulloac/spring-extras/branch/develop/graph/badge.svg)](https://codecov.io/gh/prulloac/spring-extras)
+![GitHub release (latest SemVer pre-release)](https://img.shields.io/github/v/release/prulloac/spring-extras?include_prereleases&sort=semver)
 
-#Spring-extras
+
 
  This repository contains my personal extras to be used among the spring framework
 
