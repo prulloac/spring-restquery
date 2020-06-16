@@ -1,5 +1,7 @@
 package com.prulloac.springdataextras.restquery.nodes;
 
+import com.prulloac.springdataextras.errors.RestQueryNodeCreationException;
+import com.prulloac.springdataextras.errors.RestQueryUnidentifiedOperationException;
 import com.prulloac.springdataextras.restquery.nodes.comparison.ComparisonNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.DistinctNode;
 import com.prulloac.springdataextras.restquery.nodes.logical.AndNode;
@@ -13,6 +15,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.isA;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class NodeFactoryTest {
 
@@ -23,6 +26,8 @@ class NodeFactoryTest {
     String query3 = "name='Adrian' or lastName='Smith'";
     String query4 = "name='Adrian' && lastName!='Smith'";
     String query5 = "name not equals test";
+    String queryFail = "name length 5";
+    String queryFail2 = "name not ";
     QueryNode queryNode1 = NodeFactory.getNode(query1);
     assertThat(queryNode1, isA(ComparisonNode.class));
     QueryNode queryNode2 = NodeFactory.getNode(query2);
@@ -36,5 +41,15 @@ class NodeFactoryTest {
     assertThat(queryNode4Children, hasItem(isA(DistinctNode.class)));
     QueryNode queryNode5 = NodeFactory.getNode(query5);
     assertThat(queryNode5, isA(NotNode.class));
+    assertThrows(
+        RestQueryUnidentifiedOperationException.class,
+        () -> {
+          NodeFactory.getNode(queryFail);
+        });
+    assertThrows(
+        RestQueryNodeCreationException.class,
+        () -> {
+          NodeFactory.getNode(queryFail2);
+        });
   }
 }

@@ -1,6 +1,7 @@
 package com.prulloac.springdataextras.restquery.nodes;
 
 import com.google.re2j.Pattern;
+import com.prulloac.springdataextras.errors.RestQueryNodeCreationException;
 import com.prulloac.springdataextras.errors.RestQueryUnidentifiedOperationException;
 import com.prulloac.springdataextras.restquery.nodes.comparison.AfterNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.BeforeNode;
@@ -299,7 +300,7 @@ public class NodeFactory {
 
   private static void assertPartsLength(String[] parts, int expectedLength) {
     if (parts.length != expectedLength) {
-      throw new IllegalArgumentException();
+      throw new RestQueryNodeCreationException();
     }
   }
 }
