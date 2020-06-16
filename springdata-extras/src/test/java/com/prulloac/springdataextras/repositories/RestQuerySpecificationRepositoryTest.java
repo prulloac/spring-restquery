@@ -2,6 +2,7 @@ package com.prulloac.springdataextras.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Sort;
 
 import com.prulloac.springdataextras.restquery.BaseRestQueryConfig;
 import com.prulloac.springdataextras.restquery.specification.RestQuery;
@@ -21,8 +22,11 @@ public class RestQuerySpecificationRepositoryTest extends BaseRestQueryConfig {
 	@Test
 	void testFindAllStream() {
 		String query = "id>0";
-		Stream<DummyEntity> allInStream = dummyEntityRepository2.findAllInStream(RestQuery.buildQuery(DummyEntity.class, query));
+		RestQuery<DummyEntity> dummyEntityRestQuery = RestQuery.buildQuery(DummyEntity.class, query);
+		Stream<DummyEntity> allInStream = dummyEntityRepository2.findAllInStream(dummyEntityRestQuery);
+		Stream<DummyEntity> allInStream2 = dummyEntityRepository2.findAllInStream(dummyEntityRestQuery, Sort.by("field"));
 		assertThat(allInStream.count(), greaterThan(0L));
+		assertThat(allInStream2.count(), greaterThan(0L));
 	}
 
 }

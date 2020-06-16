@@ -24,11 +24,6 @@ public class RestQuerySpecificationRepositoryImpl<T, K extends Serializable>
     this.entityManager = entityManager;
   }
 
-  public RestQuerySpecificationRepositoryImpl(Class<T> domainClass, EntityManager em) {
-    super(domainClass, em);
-    this.entityManager = em;
-  }
-
   @Override
   public Stream<T> findAllInStream(Specification<T> specification) {
     return findAllInStream(specification, null);
