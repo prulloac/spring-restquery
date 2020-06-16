@@ -25,10 +25,10 @@ The RestQuery Specification creates Specification queries for any given entity.
 Supported operations:
 - Logical operations: AND, OR, NOT
 - Comparison operations:
-    * Basic: =, <>, isNull, isNotNull 
+    * Basic: =, <>, isNull, isNotNull, in 
     * Numeric: <, >, <=, >=
     * String: equals, like, startsWith, endsWith
-    * Date and Time: TBD
+    * Date and Time: before, after, between
     
 The implementation goes like this: 
 * A given string will be interpreted as a collection of _where_ clauses for a specific entity to be queried. (ie, "name = John and age > 20"). 

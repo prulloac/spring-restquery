@@ -6,7 +6,7 @@ import javax.persistence.criteria.Predicate;
 import java.math.BigDecimal;
 
 /** @author Prulloac */
-public class LessThanEqualsNode extends ComparisonNode {
+public class LessThanEqualsNode extends NumericComparisonNode {
   public LessThanEqualsNode(String field, String value) {
     super(field, value);
   }
