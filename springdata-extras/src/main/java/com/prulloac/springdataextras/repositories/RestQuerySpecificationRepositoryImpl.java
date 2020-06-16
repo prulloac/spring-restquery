@@ -13,18 +13,18 @@ import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.stream.Stream;
 
-public class BaseRestQuerySpecificationRepository<T, ID extends Serializable>
-    extends SimpleJpaRepository<T, ID> implements RestQuerySpecificationRepository<T, ID> {
+public class RestQuerySpecificationRepositoryImpl<T, K extends Serializable>
+    extends SimpleJpaRepository<T, K> implements RestQuerySpecificationRepository<T, K> {
 
   private final EntityManager entityManager;
 
-  public BaseRestQuerySpecificationRepository(
+  public RestQuerySpecificationRepositoryImpl(
       JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
     super(entityInformation, entityManager);
     this.entityManager = entityManager;
   }
 
-  public BaseRestQuerySpecificationRepository(Class<T> domainClass, EntityManager em) {
+  public RestQuerySpecificationRepositoryImpl(Class<T> domainClass, EntityManager em) {
     super(domainClass, em);
     this.entityManager = em;
   }

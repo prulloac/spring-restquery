@@ -16,9 +16,6 @@ public abstract class LogicalNode implements QueryNode, Iterable<QueryNode> {
   protected final List<QueryNode> children;
 
   protected LogicalNode(List<? extends QueryNode> children) {
-    if (isEmpty(children)) {
-      throw new IllegalArgumentException();
-    }
     this.children = Collections.unmodifiableList(children);
   }
 

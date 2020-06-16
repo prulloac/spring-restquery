@@ -39,6 +39,10 @@ for 10 minutes since last cache read.
 * Queries can be identified in said cache by its entity.
 * Rest assured, only the query will be stored in the cache, not the results, so the results can be processed on-demand
 
+### *RestQuerySpecificationRepository
+
+TODO readme
+
 ---
 ## Versionable entities framework
 

@@ -11,8 +11,8 @@ import java.util.stream.Stream;
 
 @NoRepositoryBean
 
-public interface RestQuerySpecificationRepository<T, ID extends Serializable>
-    extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
+public interface RestQuerySpecificationRepository<T, K extends Serializable>
+    extends JpaRepository<T, K>, JpaSpecificationExecutor<T> {
 
 	Stream<T> findAllInStream(Specification<T> specification);
 
