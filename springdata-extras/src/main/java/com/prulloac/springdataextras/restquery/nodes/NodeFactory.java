@@ -1,8 +1,13 @@
 package com.prulloac.springdataextras.restquery.nodes;
 
 import com.google.re2j.Pattern;
+import com.prulloac.springdataextras.errors.RestQueryUnidentifiedOperationException;
+import com.prulloac.springdataextras.restquery.nodes.comparison.AfterNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.BeforeNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.BetweenNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.ContainsIgnoreCaseNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.ContainsNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.DateTimeComparisonNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.DistinctNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.EndsWithIgnoreCaseNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.EndsWithNode;
@@ -10,6 +15,7 @@ import com.prulloac.springdataextras.restquery.nodes.comparison.EqualsIgnoreCase
 import com.prulloac.springdataextras.restquery.nodes.comparison.EqualsNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.GreaterThanEqualsNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.GreaterThanNode;
+import com.prulloac.springdataextras.restquery.nodes.comparison.InNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.LessThanEqualsNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.LessThanNode;
 import com.prulloac.springdataextras.restquery.nodes.comparison.NotNullNode;
@@ -22,10 +28,12 @@ import com.prulloac.springdataextras.restquery.nodes.logical.OrNode;
 import com.prulloac.springdataextras.restquery.operators.QueryOperator;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.AFTER;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.BEFORE;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.BETWEEN;
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.CONTAINS;
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.CONTAINS_IGNORE_CASE;
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.DISTINCT;
@@ -35,6 +43,7 @@ import static com.prulloac.springdataextras.restquery.operators.ComparisonOperat
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.EQUALS_IGNORE_CASE;
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.GREATER_THAN;
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.GREATER_THAN_EQUALS;
+import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.IN;
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.LESS_THAN;
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.LESS_THAN_EQUALS;
 import static com.prulloac.springdataextras.restquery.operators.ComparisonOperator.NOT_NULL;
@@ -47,8 +56,6 @@ import static com.prulloac.springdataextras.restquery.operators.LogicalOperator.
 
 /** @author Prulloac */
 public class NodeFactory {
-  private static final Pattern REGEX_PATTERN_NOT_LOGICAL_NODE =
-      Pattern.compile(NOT.getRegexForRepresentations());
 
   private NodeFactory() {
     super();
@@ -86,6 +93,9 @@ public class NodeFactory {
     if (hasOperatorExpression(query, EQUALS)) {
       return createEqualNode(query);
     }
+    if (hasOperatorExpression(query, IN)) {
+      return createInNode(query);
+    }
     return createNullComparisonNode(query);
   }
 
@@ -121,11 +131,20 @@ public class NodeFactory {
     if (hasOperatorExpression(query, ENDS_WITH)) {
       return createEndsWithNode(query);
     }
-    return createTimeAndDateComparisonNode(query);
+    return createDatetimeComparisonNode(query);
   }
 
-  private static QueryNode createTimeAndDateComparisonNode(String query) {
-    return null;
+  private static QueryNode createDatetimeComparisonNode(String query) {
+    if (hasOperatorExpression(query, BEFORE)) {
+      return createBeforeNode(query);
+    }
+    if (hasOperatorExpression(query, AFTER)) {
+      return createAfterNode(query);
+    }
+    if (hasOperatorExpression(query, BETWEEN)) {
+      return createBetweenNode(query);
+    }
+    throw new RestQueryUnidentifiedOperationException();
   }
 
   private static QueryNode createOrNode(String query) {
@@ -147,8 +166,8 @@ public class NodeFactory {
   private static QueryNode createNotNode(String query) {
     String[] parts = splitQueryForOperator(query, NOT);
     assertPartsLength(parts, 2);
-    String newQuery = REGEX_PATTERN_NOT_LOGICAL_NODE.matcher(query).replaceAll(" ");
-    return new NotNode(Collections.singletonList(getNode(newQuery)));
+    String newQuery = NotNode.reformatQuery(query);
+    return new NotNode(getNode(newQuery));
   }
 
   private static QueryNode createDistinctNode(String query) {
@@ -161,6 +180,13 @@ public class NodeFactory {
     String[] parts = splitQueryForOperator(query, EQUALS);
     assertPartsLength(parts, 2);
     return new EqualsNode(parts[0], parts[1].split(","));
+  }
+
+  private static QueryNode createInNode(String query) {
+    String[] parts = splitQueryForOperator(query, IN);
+    assertPartsLength(parts, 2);
+    InNode.assertValuesSyntax(parts[1]);
+    return new InNode(parts[0], parts[1]);
   }
 
   private static QueryNode createNotNullNode(String query) {
@@ -239,6 +265,27 @@ public class NodeFactory {
     String[] parts = splitQueryForOperator(query, ENDS_WITH_IGNORE_CASE);
     assertPartsLength(parts, 2);
     return new EndsWithIgnoreCaseNode(parts[0], parts[1]);
+  }
+
+  private static QueryNode createBeforeNode(String query) {
+    String[] parts = splitQueryForOperator(query, BEFORE);
+    assertPartsLength(parts, 2);
+    DateTimeComparisonNode.assertValueSyntax(parts[1]);
+    return new BeforeNode(parts[0], parts[1]);
+  }
+
+  private static QueryNode createAfterNode(String query) {
+    String[] parts = splitQueryForOperator(query, AFTER);
+    assertPartsLength(parts, 2);
+    DateTimeComparisonNode.assertValueSyntax(parts[1]);
+    return new AfterNode(parts[0], parts[1]);
+  }
+
+  private static QueryNode createBetweenNode(String query) {
+    String[] parts = splitQueryForOperator(query, BETWEEN);
+    assertPartsLength(parts, 2);
+    BetweenNode.assertValueSyntax(parts[1]);
+    return new BetweenNode(parts[0], parts[1]);
   }
 
   private static boolean hasOperatorExpression(String query, QueryOperator operator) {

@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 @Entity
 public class DummyEntity {
@@ -29,6 +31,10 @@ public class DummyEntity {
   @SorteableColumn public String fieldNotColumn;
 
   @JoinColumn @ManyToOne public DummyContainerEntity container;
+
+  @Column public LocalDate birth;
+
+  @Column public ZonedDateTime register;
 
   public Long getId() {
     return id;
