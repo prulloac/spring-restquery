@@ -9,6 +9,10 @@ import com.prulloac.springdataextras.schema.DummyContainerEntity;
 import com.prulloac.springdataextras.schema.DummyEntity;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 @DataJpaTest
 public class BaseRestQueryConfig {
 
@@ -27,6 +31,8 @@ public class BaseRestQueryConfig {
     dummyEntity.id = 1L;
     dummyEntity.field = "test";
     dummyEntity.container = dummyContainerEntity2;
+    dummyEntity.birth = LocalDate.of(1991, 1, 30);
+    dummyEntity.register = ZonedDateTime.of(2020, 1, 1, 1, 0, 0, 0, ZoneId.systemDefault());
     testEntityManager.persistAndFlush(dummyEntity);
     DummyEntity dummyEntity2 = new DummyEntity();
     dummyEntity2.id = 2L;

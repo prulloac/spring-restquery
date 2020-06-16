@@ -1,4 +1,8 @@
-#Spring-extras
+[![Build Status](https://travis-ci.com/prulloac/spring-extras.svg?branch=develop)](https://travis-ci.com/prulloac/spring-extras)
+[![codecov](https://codecov.io/gh/prulloac/spring-extras/branch/develop/graph/badge.svg)](https://codecov.io/gh/prulloac/spring-extras)
+![GitHub release (latest SemVer pre-release)](https://img.shields.io/github/v/release/prulloac/spring-extras?include_prereleases&sort=semver)
+
+
 
  This repository contains my personal extras to be used among the spring framework
 
@@ -21,10 +25,10 @@ The RestQuery Specification creates Specification queries for any given entity.
 Supported operations:
 - Logical operations: AND, OR, NOT
 - Comparison operations:
-    * Basic: =, <>, isNull, isNotNull 
+    * Basic: =, <>, isNull, isNotNull, in 
     * Numeric: <, >, <=, >=
     * String: equals, like, startsWith, endsWith
-    * Date and Time: TBD
+    * Date and Time: before, after, between
     
 The implementation goes like this: 
 * A given string will be interpreted as a collection of _where_ clauses for a specific entity to be queried. (ie, "name = John and age > 20"). 

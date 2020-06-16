@@ -6,7 +6,7 @@ import javax.persistence.criteria.Predicate;
 import java.math.BigDecimal;
 
 /** @author Prulloac */
-public class GreaterThanNode extends ComparisonNode {
+public class GreaterThanNode extends NumericComparisonNode {
   public GreaterThanNode(String field, String value) {
     super(field, value);
   }
