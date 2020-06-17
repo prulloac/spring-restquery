@@ -5,22 +5,35 @@ import com.prulloac.springdataextras.annotation.SorteableColumn;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 @Entity
 public class DummyEntity {
+  public enum STATE {
+    A, B;
+  }
 
   @SorteableColumn @FilterableColumn @Column @Id public Long id;
 
   @SorteableColumn @FilterableColumn @Column public String field;
 
-  @Column public int age;
+  @Column public int someInteger;
 
-  @Column public float height;
+  @Column public float someFloat;
+
+  @Column public double someDouble;
+
+  @Column public double someShort;
+
+  @Column public BigDecimal someBigDecimal;
+
+  @Enumerated public STATE state;
 
   @FilterableColumn @Column public int otherField;
 

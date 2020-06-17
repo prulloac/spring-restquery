@@ -5,6 +5,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 /** @author Prulloac */
 public class EqualsNode extends ComparisonNode {
@@ -15,9 +16,10 @@ public class EqualsNode extends ComparisonNode {
   @Override
   public Predicate getPredicate(Path<?> propertyPath, CriteriaBuilder criteriaBuilder) {
     List<Object> arguments = getArguments();
-    Predicate base = criteriaBuilder.equal(propertyPath, arguments.get(0));
+    Predicate base = criteriaBuilder.equal(propertyPath, toEnumIfNeeded(propertyPath).apply(arguments.get(0)));
     for (int i = 1; i < arguments.size(); i++) {
-      Predicate otherCondition = criteriaBuilder.equal(propertyPath, arguments.get(i));
+      Predicate otherCondition =
+          criteriaBuilder.equal(propertyPath, toEnumIfNeeded(propertyPath).apply(arguments.get(i)));
       base = criteriaBuilder.or(base, otherCondition);
     }
     return base;

@@ -20,7 +20,7 @@ public class LessThanNode extends NumericComparisonNode {
     }
     if (type.isEnum()) {
       return criteriaBuilder.lessThan(
-          propertyPath.as(Enum.class), Enum.valueOf((Class<? extends Enum>) type, value));
+          propertyPath, Enum.valueOf((Class<? extends Enum>) type, value));
     }
     return criteriaBuilder.lt(propertyPath.as(BigDecimal.class), new BigDecimal(value));
   }

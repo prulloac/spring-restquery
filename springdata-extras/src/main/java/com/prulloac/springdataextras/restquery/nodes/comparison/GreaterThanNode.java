@@ -19,8 +19,7 @@ public class GreaterThanNode extends NumericComparisonNode {
       return criteriaBuilder.gt(propertyPath.as(Double.class), Double.valueOf(value));
     }
     if (type.isEnum()) {
-      return criteriaBuilder.greaterThan(
-          propertyPath.as(Enum.class), Enum.valueOf((Class<? extends Enum>) type, value));
+      return criteriaBuilder.greaterThan(propertyPath, Enum.valueOf((Class<? extends Enum>) type, value));
     }
     return criteriaBuilder.gt(propertyPath.as(BigDecimal.class), new BigDecimal(value));
   }

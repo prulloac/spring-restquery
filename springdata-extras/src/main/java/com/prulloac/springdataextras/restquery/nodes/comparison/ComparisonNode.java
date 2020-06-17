@@ -7,6 +7,8 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /** @author Prulloac */
 public abstract class ComparisonNode implements QueryNode {
@@ -31,4 +33,10 @@ public abstract class ComparisonNode implements QueryNode {
   }
 
   public abstract Predicate getPredicate(Path<?> propertyPath, CriteriaBuilder criteriaBuilder);
+
+  protected UnaryOperator<Object> toEnumIfNeeded(Path propertyPath) {
+    Class<?> javaType = propertyPath.getJavaType();
+    return value -> javaType.isEnum() ? Enum.valueOf((Class<? extends Enum>) javaType, (String) value): value;
+  }
+
 }

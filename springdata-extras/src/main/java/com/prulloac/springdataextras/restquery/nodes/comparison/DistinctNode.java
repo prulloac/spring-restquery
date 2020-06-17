@@ -15,9 +15,9 @@ public class DistinctNode extends ComparisonNode {
   @Override
   public Predicate getPredicate(Path<?> propertyPath, CriteriaBuilder criteriaBuilder) {
     List<Object> arguments = getArguments();
-    Predicate base = criteriaBuilder.notEqual(propertyPath, arguments.get(0));
+    Predicate base = criteriaBuilder.notEqual(propertyPath, toEnumIfNeeded(propertyPath).apply(arguments.get(0)));
     for (int i = 1; i < arguments.size(); i++) {
-      Predicate otherCondition = criteriaBuilder.notEqual(propertyPath, arguments.get(i));
+      Predicate otherCondition = criteriaBuilder.notEqual(propertyPath, toEnumIfNeeded(propertyPath).apply(arguments.get(i)));
       base = criteriaBuilder.and(base, otherCondition);
     }
     return base;

@@ -12,15 +12,14 @@ public class GreaterThanEqualsNode extends NumericComparisonNode {
   }
 
   @Override
-  public Predicate getPredicate(Path<?> propertyPath, CriteriaBuilder criteriaBuilder) {
+  public Predicate getPredicate(Path propertyPath, CriteriaBuilder criteriaBuilder) {
     String value = (String) getArguments().get(0);
     Class<?> type = propertyPath.getJavaType();
     if (isNativeNumericType(type)) {
       return criteriaBuilder.ge(propertyPath.as(Double.class), Double.valueOf(value));
     }
     if (type.isEnum()) {
-      return criteriaBuilder.greaterThanOrEqualTo(
-          propertyPath.as(Enum.class), Enum.valueOf((Class<? extends Enum>) type, value));
+      return criteriaBuilder.greaterThanOrEqualTo(propertyPath, Enum.valueOf((Class<? extends Enum>) type, value));
     }
     return criteriaBuilder.ge(propertyPath.as(BigDecimal.class), new BigDecimal(value));
   }
