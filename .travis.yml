@@ -8,33 +8,39 @@ cache:
 install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
+addons:
+  sonarcloud:
+    organization: "prulloac-2010"
+    token:
+      secure: "JqwzUJT7HlaPIKg/XZ73Voc4fYOPuw3hr4RkGRlvRSD0zybolKG78vKd674ghd9rgS4y4wsMmo50Z25TYzYDh2kNXRC1zo+R7spMQsI+KUZ0wKZX+U7MqsDJig3uUJ8plB3ZXMtog61vO4sRJY3YBbhmd/QSFdsgvC4L/qsaLMUrFfvJWxOb7h6ZyHGSd9ukitUbaFRpvPgJWrcNwOwIejNed5DNJQmfy4M1eVDj1zugUllpGRo8ML6Obj7sP8QxtyAm/RZlaHU/OgJ2D9ix3LDwr6NsDOgEVUnph6ZSGcthv4JeGM7e6QPyfOdYj014RN0tP3nopZcISri79TjsLo9W58BRwMc+5a2hj9mwznEGTsPuhMiLlvQ/jSCIklJuuwWbaKtM0jlfZIHVEVD+PVKTxLqWSJ/mX0cJRHblqsC4Xrtw0O40IDzvkzhPqk7hS/jdiwsdInv/+/+EaesYkOy3rbHe6dOsBpks7QM/IL/Xgkf32julWqJ8rFDQUIHP/g/GM42DwUGCE1yHtblijuNcs2kmcQ3RikahxXKtaF1XGWG0faP1SJWFCfCbSyZLb4MgZY9fdLRRHD5WHkpOt3c1zcQCZH1lOX794D8WYo9RfJRlbXNbGKXnudeNjxyQiRHohkElXr+nvzwHAjcXXkymuQIYtMnyOs2JQUOovus="
+
 jobs:
   include:
     # 1.1 Semver check
     - stage: test
-      jdk: openjdk11
       script: mvn verify -Pcheck-semantic-version -DskipTests=true -DskipITs=true -Darchetype.test.skip=true
       env: CHECK_SEMANTIC_VERSION=true
 
     # 1.2 Tests
     - stage: test
-      jdk: openjdk11
       script: mvn verify
       env: VERIFY=true
 
       # 1.3 Coverage
     - stage: test
-      jdk: openjdk11
       script: mvn jacoco:prepare-agent verify jacoco:report
       env: COVERAGE=true
       after_success:
         - bash <(curl -s https://codecov.io/bash)
 
     # 1.4 Javadoc
-    - jdk: openjdk11
-      env: JAVADOC=true
+    - env: JAVADOC=true
       script:
         - mvn javadoc:jar
+
+    # 1.5 Sonarqube
+    - script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=prulloac_spring-extras
+      env: SONARQUBE=true
 
 
 branches:
