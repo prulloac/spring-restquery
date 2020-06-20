@@ -10,20 +10,6 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=prulloac_spring-extras&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=prulloac_spring-extras)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8bc978a93b0544ec8511efe83c870fdc)](https://www.codacy.com/manual/pablo.ulloac/spring-extras?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=prulloac/spring-extras&amp;utm_campaign=Badge_Grade)
 
- This repository contains my personal extras to be used among the spring framework
-
----
-
-## Table of contents
-1.  [Springdata Extras](#springdata-extras)
-2.  [Versionable entities framework](#versionable-entities-framework)
-
----
-
-## Springdata Extras
-
-The idea of this module is to provide more functionalities to the already robust spring-data library.
-
 ### RestQuery Specification
 
 The RestQuery Specification creates Specification queries for any given entity.
@@ -54,8 +40,3 @@ for 10 minutes since last cache read.
 ### *RestQuerySpecificationRepository
 
 TODO readme
-
----
-## Versionable entities framework
-
-TODO readme 
