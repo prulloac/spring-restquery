@@ -1,7 +1,7 @@
-![GitHub release (latest SemVer pre-release)](https://img.shields.io/github/v/release/prulloac/spring-extras?include_prereleases&sort=semver)
-[![Build Status](https://img.shields.io/travis/prulloac/spring-extras/develop?logo=travis)](https://travis-ci.org/prulloac/spring-extras)
+![GitHub release (latest SemVer pre-release)](https://img.shields.io/github/v/release/prulloac/spring-restquery?include_prereleases&sort=semver)
+[![Build Status](https://img.shields.io/travis/prulloac/spring-restquery/develop?logo=travis)](https://travis-ci.org/prulloac/spring-restquery)
 
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=prulloac_spring-extras&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=prulloac_spring-extras)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=prulloac_spring-extras&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=prulloac_spring-restquery)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=prulloac_spring-extras&metric=code_smells)](https://sonarcloud.io/dashboard?id=prulloac_spring-extras)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=prulloac_spring-extras&metric=bugs)](https://sonarcloud.io/dashboard?id=prulloac_spring-extras)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=prulloac_spring-extras&metric=sqale_index)](https://sonarcloud.io/dashboard?id=prulloac_spring-extras)

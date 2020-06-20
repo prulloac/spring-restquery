@@ -12,7 +12,7 @@ addons:
   sonarcloud:
     organization: "prulloac-2010"
     token:
-      secure: "J8pSV67tXpmtiAlR4Griy1BHod1Fydslh5XtCQwC222rvvRpYUSLtsVNFM1XtDIrd28WN67d3pfktVoTpHnpNJNYDSEwSFVz7wMIYlmZu6633Op+YG4W0RmS+95lYNTP95NiLTBgwg+mfGaYutchqZBft5XlLApW/zfEp5N8zOXmsKBqqWdEUxcSOC8jtUJE61B+pCSMsA22tFVZ3U8jo40G9c4PrwdAJl3bA0IzlD7To2ckvqLrZ+z/U+cRu+4DwzWL/4QG1WquKpQeL8VxVxK8BJZnD+JpwZRQ0M33KdToiocpo+3QFHUEYlWjeLwKAV1SiIRxsjljUwf+bRTihSD37RN7PzddAN9YzXJacFk0cgpYy1WRAfkorug9wL1FVy8pB806sT4jZ+AtZh0Uc4gOruDwzQC9ZnQWvU+85bYW7PMFxdZBxRx20eHDR2gYaQy/8pSiEH6tiGpvS3z5WTeFLawo+EHEPBz7dCz9Mu0s2dWIL+wUf+44aTLWvNISEkU7d15ZF9E0PEz0D9tqTIyLdQK1Md7Mp9YWmGu83Zqzfqz3mrawPeMoLXxDJIZ+NkvHVMFyyLI+BvAWTOzcZg1oeKDhOeaa5HceqDj1ff6S/I5IoV79JoHCZlGIPrOpaZrJvQK/XjGhpeBVW7yrNolh4iSa52KNcEslsWVdtQA="
+      secure: "z8A8Bq1HjDdxsxCeS+hrl7u2KGVmold7Nyk0WBtal4+eEqQbbruBYfT4YSDRiZot+xYpaCGVtodF/J4AvdOIM7Epz9IpJXdcUyC0jBQbtGmY8TKCTUOqCFdHIxMgL7Wmuo9rayMbfP0FmcT7hC5P0tEXPvoYDiprsDOUz7Anc6/gCUyfP/DlIVbzUPs5L5Id7THrMeGWCa8Bj/DgBNPVYBS1PBfNooTriEc48MTQ/rgrc2Pq+19yPuec6CTjYHxscBaKT4TBiA5NBR6ADhpYIedhRNzB7cCSenLEXGljlDzjHKJmDm/lTeUwc8KtAFk0K4HLr8XYIF5A1Iyn7Ay/hMJFyNB46Ui3Bw3RrQhnrrMNsbPEOz4G3K/90HXWcGARWKTuM5N4EU2hSqgAfJYmBeLNOeTg2dJgq3xWqvA8ZqdlwlRxaiLCrvlulyy50/EOYw0lCyS09YFoOn6PgySKbz8CFKN0SRogFylrLIE2FiAoDUDjc9ZNGYrAlo56ILqrgQMLcG8WRjILiIaYGH/K1RURZ5fuNujeVMgmEPldFk1VGOigvuNGp4PsQpu6ptT1WTbgCZ2e4HW3QXO+lluhzQShqdiFnMmH5IlcfIujMBmUs3MfSf4HCoGhP2/KLseme6QjfHKcYnPCwqqty3B6B2uvRbTm1d3ptsvf5/bZILI="
 
 jobs:
   include:
@@ -39,7 +39,7 @@ jobs:
         - mvn javadoc:jar
 
     # 1.5 Sonarqube
-    - script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=prulloac_spring-extras
+    - script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=prulloac_spring-restquery
       env: SONARQUBE=true
 
 
